@@ -1,3 +1,6 @@
+from typing import Any
+
+
 class Product:
     """Инициализация продукта.
     name: Название продукта
@@ -12,11 +15,53 @@ class Product:
     quantity: int
 
     def __init__(self, name: str, description: str, price: float, quantity: int) -> None:
-        """Инициализация продукта"""
+        """Инициализация продукта."""
         self.name = name
         self.description = description
-        self.price = price
+        self.__price = price
         self.quantity = quantity
+
+    def __str__(self) -> str:
+        """Строковое отображение продукта"""
+        return f"{self.name}, {self.price} руб. Остаток: {self.quantity} шт."
+
+    def __add__(self, other) -> Any:
+        """Возвращает суммарную стоимость продуктов (цена × количество)."""
+        price_sum = self.price * self.quantity + other.price * other.quantity
+        return price_sum
+
+    @property
+    def price(self) -> float:
+        """Геттер для цены продукта."""
+        return self.__price
+
+    @price.setter
+    def price(self, new_price: float) -> None:
+        """Сеттер для цены продукта с проверкой."""
+        if new_price <= 0:
+            print("Цена не должна быть нулевая или отрицательная")
+            return
+        self.__price = new_price
+
+    @classmethod
+    def new_product(cls, product_date: dict) -> "Product":
+        """Класс - метод для создания продукта из словаря данных.
+        Args:
+        product_data: Словарь с параметрами продукта:
+        {
+            'name': str,
+            'description': str,
+            'price': float,
+            'quantity': int
+        }
+        Returns:
+            Созданный объект класса Product"""
+        return cls(
+            name=product_date["name"],
+            description=product_date["description"],
+            price=product_date["price"],
+            quantity=product_date["quantity"],
+        )
 
 
 class Category:
@@ -29,15 +74,37 @@ class Category:
     name: str
     description: str
     products: list[Product]
-
     category_count: int = 0
     product_count: int = 0
 
     def __init__(self, name: str, description: str, products: list[Product]) -> None:
-        """Инициализация категории"""
         self.name = name
         self.description = description
-        self.products = products if products else []
-
+        self.__products = products
         Category.category_count += 1
-        Category.product_count += len(self.products)
+        Category.product_count += len(self.__products)
+
+    def __str__(self) -> str:
+        """Строковое отображение категории, количество продуктов считается из общего числа всех продуктов на складе."""
+        quantity_sum = 0
+        for product in self.__products:
+            quantity_sum += product.quantity
+        return f"{self.name}, количество продуктов: {quantity_sum} шт.\n"
+
+    @property
+    def products_list(self) -> list[Product]:
+        """Возвращает список продуктов категории."""
+        return self.__products
+
+    @property
+    def products(self) -> str:
+        """Возвращает строковое представление всех продуктов."""
+        product_str = ""
+        for product in self.__products:
+            product_str += f"{str(product)}\n"
+        return product_str
+
+    def add_product(self, product: Product) -> None:
+        """Добавляет продукт в категорию."""
+        self.__products.append(product)
+        Category.product_count += 1
