@@ -68,6 +68,48 @@ class Product:
             color=product_date["color"],
         )
 
+    def __str__(self) -> str:
+        """Строковое отображение продукта"""
+        return f"{self.name}, {self.price} руб. Остаток: {self.quantity} шт."
+
+    def __add__(self, other) -> Any:
+        """Возвращает суммарную стоимость продуктов (цена × количество)."""
+        price_sum = self.price * self.quantity + other.price * other.quantity
+        return price_sum
+
+    @property
+    def price(self) -> float:
+        """Геттер для цены продукта."""
+        return self.__price
+
+    @price.setter
+    def price(self, new_price: float) -> None:
+        """Сеттер для цены продукта с проверкой."""
+        if new_price <= 0:
+            print("Цена не должна быть нулевая или отрицательная")
+            return
+        self.__price = new_price
+
+    @classmethod
+    def new_product(cls, product_date: dict) -> "Product":
+        """Класс - метод для создания продукта из словаря данных.
+        Args:
+        product_data: Словарь с параметрами продукта:
+        {
+            'name': str,
+            'description': str,
+            'price': float,
+            'quantity': int
+        }
+        Returns:
+            Созданный объект класса Product"""
+        return cls(
+            name=product_date["name"],
+            description=product_date["description"],
+            price=product_date["price"],
+            quantity=product_date["quantity"],
+        )
+
 
 class Category:
     """Инициализация категории.
