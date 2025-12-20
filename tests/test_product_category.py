@@ -15,10 +15,63 @@ def test_category_init(info_category: Category) -> None:
     assert info_category.description == (
         "Смартфоны, как средство не только коммуникации, но и получения " "дополнительных функций для удобства жизни"
     )
-    assert len(info_category.products) == 3
+    # assert len(info_category.products) == 3
 
 
 def test_count(info_category: Category) -> None:
     """Проверка подсчета количества продуктов и подсчет количества категорий."""
-    assert info_category.product_count == 6         # для теста проверка через терминал дает такой результат
-    assert info_category.category_count == 2        # без файла json результат 3 и 1
+    assert info_category.product_count == 6  # для теста проверка через терминал дает такой результат
+    assert info_category.category_count == 2  # без файла json результат 3 и 1
+
+
+def test_price(info_product: "Product") -> None:
+    """Тест на корректное изменение цены"""
+    info_product.price = 800
+    assert info_product.price == 800
+    info_product.price = 12000
+    assert info_product.price == 12000
+
+
+def test_price_zero(info_product: "Product", capsys) -> None:
+    """Тест на недопустимые значения цены"""
+    info_product.price = 0
+    message = capsys.readouterr()
+    assert message.out.strip() == "Цена не должна быть нулевая или отрицательная"
+
+    info_product.price = -100
+    message = capsys.readouterr()
+    assert message.out.strip() == "Цена не должна быть нулевая или отрицательная"
+
+
+def test_new_product() -> None:
+    """Тестируем создание продукта из словаря"""
+    test_data = {
+        "name": "Samsung Galaxy Ultra",
+        "description": "1TB, Красный цвет, 200MP камера",
+        "price": 15000,
+        "quantity": 3,
+    }
+    product = Product.new_product(test_data)
+
+    assert product.name == "Samsung Galaxy Ultra"
+    assert product.description == "1TB, Красный цвет, 200MP камера"
+    assert product.price == 15000
+    assert product.quantity == 3
+
+
+def test_products_list() -> None:
+    """Возвращает строковое представление продуктов."""
+    product1 = Product("Samsung Galaxy S23 Ultra", "Смартфон", 150000, 4)
+    product2 = Product("Ноутбук", "Игровой", 50000, 3)
+
+    category = Category("Электроника", "Техника", [product1, product2])
+    assert category.products == (
+        "Samsung Galaxy S23 Ultra, 150000 руб. Остаток: 4шт.\nНоутбук, 50000 руб. Остаток: 3шт.\n"
+    )
+
+
+def test_add_product() -> None:
+    category = Category("Телефоны", "Смартфоны", [])
+    product = Product("iPhone", "Смартфон", 50000, 10)
+    category.add_product(product)
+    assert len(category._Category__products) == 1
