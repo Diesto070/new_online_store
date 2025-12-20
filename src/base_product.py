@@ -30,7 +30,7 @@ class BaseProduct(ABC):
 
     @classmethod
     @abstractmethod
-    def new_product(cls, *args: Any, **kwargs: Any) -> 'BaseProduct':
+    def new_product(cls, *args: Any, **kwargs: Any) -> "BaseProduct":
         """Абстрактный класс - метод для создания продукта из словаря данных."""
         ...
     

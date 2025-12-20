@@ -14,6 +14,13 @@ class Product(PrintMixin, BaseProduct):
 
     def __init__(self, name: str, description: str, price: float, quantity: int) -> None:
         """Инициализация продукта."""
+        if quantity >= 0:
+            self.quantity = quantity
+        else:
+            raise ValueError("Товар с нулевым количеством не может быть добавлен")
+        if quantity <= 0:
+            raise ValueError("Товар с нулевым количеством не может быть добавлен")
+
         super().__init__(name, description, quantity)
         self.__price = price
         print(repr(self))
@@ -109,10 +116,11 @@ class Category:
         else:
             raise TypeError
 
-    # def add_product(self, product: Product):
-    #     """Добавляет продукт в категорию."""
-    #     if not isinstance(product, Product):
-    #         raise TypeError("В категорию можно добавлять только объекты Product или его наследников")
-    #     self.__products.append(product)
-    #     Category.product_count += 1
-    
+    def middle_price(self) -> float:
+        """Подсчитывает средний ценник всех товаров в категории."""
+        try:
+            total_price = sum(product.price for product in self.__products)
+            return total_price / len(self.__products)
+        except ZeroDivisionError:
+            return 0
+        

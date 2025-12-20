@@ -157,4 +157,31 @@ def test_category_product_add(info_category_: Category, product_smartphone1: Sma
     """
     info_category_.add_product(product_smartphone1)
     assert info_category_.products_list[-1].name == "Samsung Galaxy S23"
+
+
+def test_init_error_quantity_zero() -> None:
+    """Тест, что при нулевом количестве выбрасывается исключение"""
+    with pytest.raises(ValueError, match="Товар с нулевым количеством не может быть добавлен"):
+        Product("Samsung", "Смартфон", 15000.00, 0)
+
+
+def test_init_error_quantity_negative() -> None:
+    """Тест, что при отрицательном количестве также выбрасывается исключение"""
+    with pytest.raises(ValueError, match="Товар с нулевым количеством не может быть добавлен"):
+        Product("Samsung", "Смартфон", 15000.00, -5)
+
+
+def test_middle_price_with_products(info_category_: Category) -> None:
+    """Тест расчета средней цены с товарами"""
+    result = round(info_category_.middle_price(), 2)
+    assert result == 140333.33
+
+
+def test_middle_price_category() -> None:
+    """Тест расчета средней цены пустой категории"""
+    category = Category("Электроника", "Техника", [])
+    category._Category__products = []
+
+    result = category.middle_price()
+    assert result == 0
     

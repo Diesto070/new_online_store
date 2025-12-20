@@ -8,9 +8,9 @@ from src.smartphone_product import Smartphone
 def test_print_mixin(capsys: pytest.CaptureFixture) -> None:
     """Тестирует функциональность миксина PrintMixin для разных классов продуктов.
 
-       Args:
-           capsys: Фикстура pytest для перехвата вывода в stdout
-       """
+    Args:
+        capsys: Фикстура pytest для перехвата вывода в stdout
+    """
     Product("Samsung Galaxy S23 Ultra", "256GB, Серый цвет, 200MP камера", 180000.0, 5)
     message = capsys.readouterr()
     assert message.out.strip() == "Product(Samsung Galaxy S23 Ultra, 256GB, Серый цвет, 200MP камера, 180000.0, 5)"
