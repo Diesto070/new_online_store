@@ -14,12 +14,59 @@ class Product:
     price: float
     quantity: int
 
-    def __init__(self, name: str, description: str, price: float, quantity: int) -> None:
+    def __init__(self, name: str, description: str, price: float, quantity: int, color: str) -> None:
         """Инициализация продукта."""
         self.name = name
         self.description = description
         self.__price = price
         self.quantity = quantity
+        self.color = color
+
+    def __str__(self) -> str:
+        """Строковое отображение продукта"""
+        return f"{self.name}, {self.price} руб. Остаток: {self.quantity} шт."
+
+    def __add__(self, other) -> Any:
+        """Возвращает суммарную стоимость продуктов (цена × количество)."""
+        if type(other) is Product:
+            price_sum = self.price * self.quantity + other.price * other.quantity
+            return price_sum
+        raise TypeError
+
+    @property
+    def price(self) -> float:
+        """Геттер для цены продукта."""
+        return self.__price
+
+    @price.setter
+    def price(self, new_price: float) -> None:
+        """Сеттер для цены продукта с проверкой."""
+        if new_price <= 0:
+            print("Цена не должна быть нулевая или отрицательная")
+            return
+        self.__price = new_price
+
+    @classmethod
+    def new_product(cls, product_date: dict) -> "Product":
+        """Класс - метод для создания продукта из словаря данных.
+        Args:
+        product_data: Словарь с параметрами продукта:
+        {
+            'name': str,
+            'description': str,
+            'price': float,
+            'quantity': int,
+            'color': str
+        }
+        Returns:
+            Созданный объект класса Product"""
+        return cls(
+            name=product_date["name"],
+            description=product_date["description"],
+            price=product_date["price"],
+            quantity=product_date["quantity"],
+            color=product_date["color"],
+        )
 
     def __str__(self) -> str:
         """Строковое отображение продукта"""
@@ -106,5 +153,16 @@ class Category:
 
     def add_product(self, product: Product) -> None:
         """Добавляет продукт в категорию."""
-        self.__products.append(product)
-        Category.product_count += 1
+        if isinstance(product, Product):
+            self.__products.append(product)
+            Category.product_count += 1
+        else:
+            raise TypeError
+
+    # def add_product(self, product: Product):
+    #     """Добавляет продукт в категорию."""
+    #     if not isinstance(product, Product):
+    #         raise TypeError("В категорию можно добавлять только объекты Product или его наследников")
+    #     self.__products.append(product)
+    #     Category.product_count += 1
+    
