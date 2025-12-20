@@ -20,7 +20,8 @@ def create_objects_from_json(data: List[Any]) -> List[Category]:
                 name=product_data["name"],
                 description=product_data["description"],
                 price=product_data["price"],
-                quantity=product_data["quantity"]
+                quantity=product_data["quantity"],
+                color=product_data["color"],
             )
             products.append(product)
 
