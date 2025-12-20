@@ -1,3 +1,6 @@
+from typing import Any
+
+
 class Product:
     """Инициализация продукта.
     name: Название продукта
@@ -17,6 +20,15 @@ class Product:
         self.description = description
         self.__price = price
         self.quantity = quantity
+
+    def __str__(self) -> str:
+        """Строковое отображение продукта"""
+        return f"{self.name}, {self.price} руб. Остаток: {self.quantity} шт."
+
+    def __add__(self, other) -> Any:
+        """Возвращает суммарную стоимость продуктов (цена × количество)."""
+        price_sum = self.price * self.quantity + other.price * other.quantity
+        return price_sum
 
     @property
     def price(self) -> float:
@@ -72,12 +84,24 @@ class Category:
         Category.category_count += 1
         Category.product_count += len(self.__products)
 
+    def __str__(self) -> str:
+        """Строковое отображение категории, количество продуктов считается из общего числа всех продуктов на складе."""
+        quantity_sum = 0
+        for product in self.__products:
+            quantity_sum += product.quantity
+        return f"{self.name}, количество продуктов: {quantity_sum} шт.\n"
+
+    @property
+    def products_list(self) -> list[Product]:
+        """Возвращает список продуктов категории."""
+        return self.__products
+
     @property
     def products(self) -> str:
         """Возвращает строковое представление всех продуктов."""
         product_str = ""
         for product in self.__products:
-            product_str += f"{product.name}, {product.price} руб. Остаток: {product.quantity} шт.\n"
+            product_str += f"{str(product)}\n"
         return product_str
 
     def add_product(self, product: Product) -> None:

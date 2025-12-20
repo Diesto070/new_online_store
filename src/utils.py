@@ -4,7 +4,7 @@ from typing import Any, List
 from src.product_category import Category, Product
 
 
-def read_json(path: str) -> List[Any]:
+def read_json(path: str) -> Any:
     """Загружает данные из JSON"""
     with open(path, "r", encoding="UTF-8") as file:
         data = json.load(file)
