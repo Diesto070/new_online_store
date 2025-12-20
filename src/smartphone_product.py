@@ -31,10 +31,11 @@ class Smartphone(Product):
             memory: Объем внутренней памяти в ГБ
             color: Цвет корпуса смартфона
         """
-        super().__init__(name, description, price, quantity, color)
+        super().__init__(name, description, price, quantity)
         self.efficiency = efficiency
         self.model = model
         self.memory = memory
+        self.color = color
 
     def __add__(self, other: Any) -> float:
         """Складывает общую стоимость двух партий смартфонов.

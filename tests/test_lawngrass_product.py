@@ -41,4 +41,5 @@ def test_lawngrass_product_add_error(product_lawngrass1: LawnGrass) -> None:
         product_lawngrass1: Фикстура с тестовым объектом газонной травы
     """
     with pytest.raises(TypeError):
-        result = product_lawngrass1 + 1
+        product_lawngrass1 + 1
+        

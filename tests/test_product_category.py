@@ -61,7 +61,6 @@ def test_new_product() -> None:
     assert product.description == "1TB, Красный цвет, 200MP камера"
     assert product.price == 15000
     assert product.quantity == 3
-    assert product.color == "red"
 
 
 def test_product_list(info_category: Category) -> None:
@@ -74,8 +73,8 @@ def test_product_list(info_category: Category) -> None:
 
 def test_products_str() -> None:
     """Возвращает строковое представление продуктов."""
-    product1 = Product("Samsung Galaxy S23 Ultra", "Смартфон", 150000, 4, "red")
-    product2 = Product("Ноутбук", "Игровой", 50000, 3, "green")
+    product1 = Product("Samsung Galaxy S23 Ultra", "Смартфон", 150000, 4)
+    product2 = Product("Ноутбук", "Игровой", 50000, 3)
 
     category = Category("Электроника", "Техника", [product1, product2])
     assert category.products == (
@@ -86,10 +85,11 @@ def test_products_str() -> None:
 def test_add_product() -> None:
     """Тестирует корректность добавления продукта в категорию."""
     category = Category("Телефоны", "Смартфоны", [])
-    product = Product("iPhone", "Смартфон", 50000, 10, "red")
+    product = Product("iPhone", "Смартфон", 50000, 10)
     assert len(category.products_list) == 0
     category.add_product(product)
     assert len(category.products_list) == 1
+
 
 def test_product_str(info_product: Product) -> None:
     """Тестирует строковое представление продукта."""
@@ -107,7 +107,7 @@ def test_category_str(info_category_: Category) -> None:
 
 def test_category_str_with_single_product() -> None:
     """Тестирует строковое представление категории с одним продуктом."""
-    product = Product("Мышь", "Компьютерная", 1500, 10, "red")
+    product = Product("Мышь", "Компьютерная", 1500, 10)
     category = Category("Аксессуары", "Для ПК", [product])
     assert str(category) == "Аксессуары, количество продуктов: 10 шт.\n"
 
@@ -132,7 +132,7 @@ def test_product_add_error(product_with_cost1: Product) -> None:
         product_with_cost1: Фикстура с тестовым объектом Product
     """
     with pytest.raises(TypeError):
-        result = product_with_cost1 + 1
+        product_with_cost1 + 1
 
 
 def test_category_product_add_error() -> None:

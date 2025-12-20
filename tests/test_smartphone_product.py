@@ -38,4 +38,4 @@ def test_smartphone_product_add_error(product_smartphone1: Smartphone) -> None:
         product_smartphone1: Фикстура с тестовым объектом смартфона
     """
     with pytest.raises(TypeError):
-        result = product_smartphone1 + 1
+        product_smartphone1 + 1

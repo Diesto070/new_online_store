@@ -1,3 +1,5 @@
+from typing import Iterator
+
 from src.product_category import Category, Product
 
 
@@ -5,16 +7,16 @@ class CategoryIterator:
     """Итератор для последовательного перебора продуктов в категории.
     Позволяет итерироваться по продуктам категории один за другим."""
 
-    def __init__(self, category_obj):
+    def __init__(self, category_obj: Category) -> None:
         self.category = category_obj
         self.index = 0
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[Product]:
         """Возвращает сам итератор для использования в цикле for."""
         self.index = 0
         return self
 
-    def __next__(self):
+    def __next__(self) -> Product:
         """Возвращает следующий продукт в категории."""
         if self.index < len(self.category.products_list):
             product = self.category.products_list[self.index]

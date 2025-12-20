@@ -19,9 +19,10 @@ class LawnGrass(Product):
         color: str,
     ) -> None:
         """Инициализирует объект газонной травы."""
-        super().__init__(name, description, price, quantity, color)
+        super().__init__(name, description, price, quantity)
         self.country = country
         self.germination_period = germination_period
+        self.color = color
 
     def __add__(self, other: Any) -> float:
         """Складывает общую стоимость двух партий газонной травы.
@@ -35,3 +36,4 @@ class LawnGrass(Product):
         if type(other) is LawnGrass:
             return self.price * self.quantity + other.price * other.quantity
         raise TypeError
+    
