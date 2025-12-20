@@ -1,4 +1,6 @@
-from src.product_category import Category, Product
+from src.lawngrass_product import LawnGrass
+from src.product_category import Category
+from src.smartphone_product import Smartphone
 
 if __name__ == "__main__":
     try:
